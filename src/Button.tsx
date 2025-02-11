@@ -2,14 +2,15 @@
 
 type ButtonPropsType = {
     title: string
+    onClick? : () => void
 }
 
 export const Button = (props: ButtonPropsType) => {
 
-    const {title} = props
+    const {title , onClick} = props
     return (
         <div>
-            <button>{title}</button>
+            <button onClick={ onClick}>{title}</button>
         </div>
     )
 }

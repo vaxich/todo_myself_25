@@ -1,9 +1,14 @@
 .App {
   display: flex;
-  margin: 50px;
+  padding: 30px;
 }
 
 .App > div {
- 
-  margin-right: 30px;
+  
+  margin-right: 50px;
 }
+
+li {
+  display: flex;
+}
+
