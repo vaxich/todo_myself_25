@@ -13,18 +13,40 @@ export type TaskType = {
 export type FilterType = "All" | "Active" | "Completed"
 
 function App() {
-
+// стейт
   const title: string = 'что учить';
 
   const [tasks, setTasks] = useState<TaskType[]>([
-    { id: '1', title: 'HTML', isDone: true },
-    { id: '2', title: 'JS', isDone: true },
-    { id: '3', title: 'React', isDone: false },
-    { id: '4', title: 'TS', isDone: false },
-    { id: '5', title: 'kamasutra', isDone: true }
+    { id: crypto.randomUUID(), title: 'HTML', isDone: true },
+    { id: crypto.randomUUID(), title: 'JS', isDone: true },
+    { id: crypto.randomUUID(), title: 'React', isDone: false },
+    { id: crypto.randomUUID(), title: 'TS', isDone: false },
+    { id: crypto.randomUUID(), title: 'kamasutra', isDone: true }
   ])
 
   const [filter, setFilter] = useState<FilterType>("All");
+
+  // функции
+
+  const changeFilter = (newValueFilter: FilterType) => {// изменение фильтра
+    setFilter(newValueFilter)
+  }
+  const deteteTask = (taskId: string) => { // удаление таскм
+    //let newTasks = tasks.filter(task => task.id != taskId)
+    setTasks(tasks.filter(task => task.id != taskId))
+  }
+
+  const addTask = (newTaskTitle: string) => { // добавление таски
+    let newTask = {
+      id: crypto.randomUUID(),
+      title: newTaskTitle,
+      isDone: false
+    }
+    let newTasks = [newTask, ...tasks]
+    setTasks(newTasks)
+  }
+
+  // фтльтрация тасок
 
   let filteredTasks: TaskType[] = tasks
 
@@ -35,13 +57,7 @@ function App() {
     filteredTasks = tasks.filter(task => task.isDone)
   }
 
-  const changeFilter = (newValueFilter: FilterType) => {
-    setFilter(newValueFilter)
-  }
-  const deteteTask = (taskId: string) => {
-    //let newTasks = tasks.filter(task => task.id != taskId)
-    setTasks(tasks.filter(task => task.id != taskId))
-  }
+ 
 
 
   return (
@@ -54,6 +70,7 @@ function App() {
           tasks={filteredTasks}
           deteteTask={deteteTask}
           changeFilter={changeFilter}
+          addTask = {addTask}
         />   
     </div>
   );
