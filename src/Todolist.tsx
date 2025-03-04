@@ -8,15 +8,17 @@ type TodolistPropsType = {
     title: string
     tasks: TaskType[]
     filter: FilterType
-    deteteTask: (taskId: string) => void
-    changeFilter: (newValueFilter: FilterType) => void
-    addTask: (newTaskTitle: string) => void
-    changeTaskStatus: (taskId: string, newTaskStatus: boolean) => void
+    todolistId: string
+    deteteTask: (todolistId: string, taskId: string) => void
+    changeFilter: (todolistId: string, newValueFilter: FilterType) => void
+    addTask: (todolistId: string, newTaskTitle: string) => void
+    changeTaskStatus: (todolistId: string, taskId: string, newTaskStatus: boolean) => void
+    deleteTodolist: (todolistId: string) => void
 }
 
 export const Todolist = (props: TodolistPropsType) => {
     // пропсы
-    const { title, tasks, filter, deteteTask, changeFilter, addTask, changeTaskStatus } = props
+    const { title, tasks, filter , todolistId, deteteTask, changeFilter, addTask, changeTaskStatus, deleteTodolist } = props
 
     // стейт
 
@@ -27,7 +29,7 @@ export const Todolist = (props: TodolistPropsType) => {
 
     const addTaskOnClickHandler = () => {
         if (inputValue.trim() !== "") {
-            addTask(inputValue)
+            addTask(todolistId , inputValue)
             setinputValue("")
         } else {
             setError("наименование не может быть пустым")
@@ -43,16 +45,24 @@ export const Todolist = (props: TodolistPropsType) => {
 
     const createTaskOnEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.code === "Enter") {
-            addTask(inputValue)
+            addTask(todolistId , inputValue)
             setinputValue("")
         }
+    }
+
+    const deleteTodolistHandler = () => {
+        deleteTodolist(todolistId)
     }
 
 
 
     return (
         <div>
+            <div className="container">
             <h3>{title}</h3>
+            <Button title="X" onClick={deleteTodolistHandler} />
+            </div>
+            
             <div>
                 <input
                     className={error ? "error" : ""}
@@ -71,10 +81,10 @@ export const Todolist = (props: TodolistPropsType) => {
                 {tasks.map(task => {
 
                     const deleteTaskHandler = () => {
-                        deteteTask(task.id)
+                        deteteTask(todolistId, task.id)
                     }
                     const changeTaskStatusOnClick = (event: ChangeEvent<HTMLInputElement>) => {
-                        changeTaskStatus(task.id, event.currentTarget.checked)
+                        changeTaskStatus(todolistId, task.id, event.currentTarget.checked)
                     }
                     return (
 
@@ -96,17 +106,17 @@ export const Todolist = (props: TodolistPropsType) => {
                 <Button
                     title='All'
                     className={filter === "All" ? "active-filter" : ""}
-                    onClick={() => changeFilter("All")}
+                    onClick={() => changeFilter(todolistId, "All")}
                 />
                 <Button
                     title='Active'
                     className={filter === "Active" ? "active-filter" : ""}
-                    onClick={() => changeFilter("Active")}
+                    onClick={() => changeFilter(todolistId, "Active")}
                 />
                 <Button
                     title='Completed'
                     className={filter === "Completed" ? "active-filter" : ""}
-                    onClick={() => changeFilter("Completed")}
+                    onClick={() => changeFilter(todolistId, "Completed")}
                 />
             </div>
         </div>
